@@ -2,17 +2,26 @@ import java.util.Scanner;
 
 public class Movement {
 
+	//this variable holds whether the players are alive are not
 	private static boolean playerOneAlive = true;
 	private static boolean playerTwoAlive = true;
 
+	//new player is made on either side of the map
 	protected static Character player1 = new Character("lol", 0, 0);
 	private static Character player2 = new Character("lolz", 10, 10);
 
+	//holds where they wanna move 
 	private static String move1;
 	private static String move2;
+	
+	//temporary variable to check if there is valid movement 
 	private static int tempx;
 	private static int tempy;
+	
+	//creates a new variable
 	protected static Map newMap = new Map();
+	
+	//booleans to check if allowed to move and if bomb is placed 
 	private static boolean checking = false;
 	private static boolean bombPlaced = false;
 
@@ -21,25 +30,10 @@ public class Movement {
 		newMap.print();
 	}
 
+	//this method gets which way the person wants to move and calls update to make sure its valid and move if it is or 
+	//returns false so the method is recalled
 	public static void movement() {
 		Scanner sc = new Scanner(System.in);
-		while (!checking) {
-			System.out.println("Player One");
-			System.out.println("Would you like to move right(R),left(L),up(U),down(D),none(N),bomb(B)");
-			newMap.print();
-			move1 = sc.nextLine();
-			checking = update(move1, player1.x, player1.y, 1);
-
-		}
-		checking = false;
-		while (!checking) {
-			System.out.println("Player Two");
-			System.out.println("Would you like to move right(R),left(L),up(U),down(D),none(N),bomb(B)");
-			move2 = sc.nextLine();
-			newMap.print();
-			checking = update(move2, player2.x, player2.y, 2);
-
-		}
 		checking = false;
 		while (playerOneAlive && playerTwoAlive) {
 			while (!checking) {
@@ -110,7 +104,9 @@ public class Movement {
 			checking = false;
 		}
 	}
-
+	
+	//checks if the movement is valid and moves the player if it is 
+	
 	public static boolean update(String move, int tempx1, int tempy1, int whichPlayer) {
 		tempx = tempx1;
 		tempy = tempy1;
@@ -160,7 +156,7 @@ public class Movement {
 		}
 
 		else if (move.equalsIgnoreCase("u")) {
-			tempy++;
+			tempy--;
 			if (tempy < 0 || tempy > 10) {
 				System.out.println("You are out of the bounds can't move up");
 				return false;
@@ -180,7 +176,7 @@ public class Movement {
 				return true;
 			}
 		} else if (move.equalsIgnoreCase("d")) {
-			tempy--;
+			tempy++;
 			if (tempy < 0 || tempy > 10) {
 				System.out.println("You are out of the bounds can't move down");
 				return false;
@@ -226,4 +222,5 @@ public class Movement {
 	public static void end() {
 		System.out.println("The end");
 	}
+	
 }
