@@ -5,6 +5,13 @@ Bomb.java
 Character.java
 Movement.java
 
+To run Bomberman first:
+Download files
+Movement.java, Map.java, Bomb.java, Character.java.
+Download Eclipse.ide for java.
+Create a java project and import the above java files into the source file.
+Run the Movement class in the command prompt to start playing the game.
+
 -------------------------------------------------------
 Map.java
 Creates a 2D array that is referenced as the map used for the gameboard.
