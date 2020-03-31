@@ -1,13 +1,15 @@
+package mechanics;
+
 public class GameObject {
-	protected Map map = new Map();
+	protected static Map map;
 	private int xCord;
 	private int yCord;
 
 	public GameObject(int xCord, int yCord) {
-		if (xCord >= 0 && xCord <= map.getLength()) {
+		if (xCord >= 0 && xCord <= 8) {
 			this.xCord = xCord;
 		}
-		if (yCord >= 0 && xCord <= map.getLength()) {
+		if (yCord >= 0 && yCord <= 8) {
 			this.yCord = yCord;
 		}
 
@@ -33,8 +35,9 @@ public class GameObject {
 		}
 	}
 
-	public void intializingMap() {
-		map.makingMap();
+	public static void intializingMap(Player p1, Player p2) {
+		map = new Map(p1, p2);
+
 	}
 
 }

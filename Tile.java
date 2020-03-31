@@ -1,13 +1,18 @@
+package mechanics;
+
 import java.util.ArrayList;
 
 public class Tile {
 
-	private ArrayList<GameObject> gameObjects = new ArrayList<GameObject>();
+	private ArrayList<GameObject> gameObjects;
 	private int x; // x-index in the map
 	private int y; // y-index in the map
 
+	public Tile() {
+		gameObjects = new ArrayList<GameObject>();
+	}
+
 	public void addGameObject(GameObject o) {
-		System.out.println("lol");
 		gameObjects.add(o);
 	}
 
@@ -50,4 +55,11 @@ public class Tile {
 		return gameObjects.isEmpty();
 	}
 
+	public void makeTileEmpty() {
+		gameObjects.clear();
+	}
+
+	public void print() {
+		System.out.println(gameObjects);
+	}
 }

@@ -1,3 +1,5 @@
+package mechanics;
+
 public class Player extends GameObject {
 
 	private String Playerid;
@@ -17,51 +19,65 @@ public class Player extends GameObject {
 	}
 
 //// in Player.java class
-	public boolean move(int x, int y, String direction, GameObject o) {
-		int tempy = y;
-		int tempx = x;
-		if (direction.equals("up")) {
+	public boolean move(String direction, GameObject o) {
+
+		int tempx = o.getxCord();
+		int tempy = o.getyCord();
+		if (direction.equalsIgnoreCase("up")) {
 			tempy--;
-			if (tempy > 0) {
+			if (tempy >= 0 && tempy < map.getLength()) {
 				if (map.isMove(tempx, tempy)) {
-					map.moving(x, y, tempx, tempy, o);
+					map.moving(o.getxCord(), o.getyCord(), tempx, tempy, o);
 					return true;
+				} else {
+					return false;
 				}
 			} else {
 				return false;
 			}
-		} else if (direction.equals("down")) {
+		} else if (direction.equalsIgnoreCase("down")) {
 			tempy++;
-			if (tempy > 0) {
+			System.out.println(tempx);
+			System.out.println(tempy);
+			if (tempy >= 0 && tempy < map.getLength()) {
 				if (map.isMove(tempx, tempy)) {
-					map.moving(x, y, tempx, tempy, o);
+					map.moving(o.getxCord(), o.getyCord(), tempx, tempy, o);
 					return true;
+				} else {
+					return false;
 				}
 			} else {
 				return false;
 			}
-		} else if (direction.equals("right")) {
+		} else if (direction.equalsIgnoreCase("right")) {
 			tempx++;
-			if (tempx > 0) {
+			if (tempy >= 0 && tempy < map.getLength()) {
 				if (map.isMove(tempx, tempy)) {
-					map.moving(x, y, tempx, tempy, o);
+					map.moving(o.getxCord(), o.getyCord(), tempx, tempy, o);
 					return true;
+				} else {
+					return false;
 				}
 			} else {
 				return false;
 			}
+		} else if (direction.equalsIgnoreCase("left")) {
+			tempy--;
+			if (tempy >= 0 && tempy < map.getLength()) {
+				if (map.isMove(tempx, tempy)) {
+					map.moving(o.getxCord(), o.getyCord(), tempx, tempy, o);
+					return true;
+				} else {
+					return false;
+				}
+			} else {
+				return false;
+			}
+		} else if (direction.equalsIgnoreCase("none")) {
+			return true;
 		} else {
-			tempx--;
-			if (tempx > 0) {
-				if (map.isMove(tempx, tempy)) {
-					map.moving(x, y, tempx, tempy, o);
-					return true;
-				}
-			} else {
-				return false;
-			}
+			return false;
 		}
-		return true;
 
 	}
 }
