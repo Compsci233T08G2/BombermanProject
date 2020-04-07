@@ -1,4 +1,6 @@
 import javafx.animation.AnimationTimer;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Group;
@@ -10,183 +12,155 @@ import javafx.scene.image.Image;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
+import javafx.util.Duration;
+import mechanics.Bomb;
+import mechanics.GameObject;
+import mechanics.Map;
+import mechanics.Player;
 import javafx.event.EventHandler;
 import javafx.scene.input.KeyEvent;
-
 
 import java.awt.Graphics;
 import java.awt.*;
 import java.awt.image.BufferStrategy;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import static java.awt.image.ImageObserver.HEIGHT;
 import static java.awt.image.ImageObserver.WIDTH;
 
 public class guiBomberman extends Application {
-    private boolean running = false;
-    private Thread thread; // might use this but not sure
-    private BufferStrategy getBufferStrategy() {
-        return this.getBufferStrategy(); } // getter for bs which is used for graphics 2d
-    private void createBufferStrategy(int i) { }
-    //private Handler handler;
+	private static boolean flag = false;
+	private Image mapImage;
+	private Image wallImage;
+	private Image bombImage;
 
-    /*@Override
-    public void start(Stage primaryStage) throws Exception{
-        Parent root = FXMLLoader.load(getClass().getResource("sample.fxml"));
-        primaryStage.setTitle("Bomberman Game");
-        primaryStage.setScene(new Scene(root, 800, 475));
-        primaryStage.show();
-    }*/
-    public static void main(String[] args) {
+	private Map map = new Map();
+	private guiBomb bomb;
+	private static Timer timer;
+	private static int interval;
+	private ArrayList<String> activeKeys;
 
-        launch(args);
-    }
-    public void start(Stage theStage){
-        theStage.setTitle("Bomberman game");
-        Group root = new Group();
-        Scene theScene = new Scene(root,550,550);
-        theStage.setScene(theScene);
+	public void start(Stage theStage) {
+		theStage.setTitle("Bomberman game");
+		Group root = new Group();
+		Scene theScene = new Scene(root, 550, 550);
+		theStage.setScene(theScene);
+		Canvas canvas = new Canvas(1200, 800);
+		root.getChildren().add(canvas);
+		GraphicsContext gc = canvas.getGraphicsContext2D();
+		Image mapImage = new Image("gameboard.png");
+		
 
+		gc.drawImage(mapImage, 0, 0);
+		////////////////////////////////////////////////////////
 
-        Canvas canvas = new Canvas(1200, 800);
-        root.getChildren().add(canvas);
+		guiPlayer player1 = new guiPlayer(0, 0, "luqman");
+		GameObject.intializingMap(player1, null);
+		bombImage = new Image("bombermanBomb.png");
+		activeKeys = new ArrayList<String>();
 
-        //handler = new Handler();
-       // handler.addObject((new Player(100, 100, ID.Player)));
-        ArrayList<String> currentlyActiveKeys = new ArrayList<String>();
-        ArrayList<Sprite> currentlyActiveSprites = new ArrayList<Sprite>();
+		///////////////////////////////////////////////////////
 
-        
-        Image map = new Image("FullGameBoard.png");
-        Image player1Image = new Image("Player1_1.png");
-        Sprite player1 = new Sprite(player1Image,0,0);
-        
-        
-       // root.getChildren().add(player1);
-        //theStage.show();
-        
-        currentlyActiveSprites.add(player1);
-        GraphicsContext gc = canvas.getGraphicsContext2D();
-        gc.drawImage( map, 0, 0 );
-        
+		theScene.setOnKeyPressed(new EventHandler<KeyEvent>() {
+			@Override
+			public void handle(KeyEvent event) {
 
-        theScene.setOnKeyPressed(
-                new EventHandler<KeyEvent>(){
-                    @Override
-                    public void handle(KeyEvent event) {
-                    	double offset=62.5;
-                        String code = event.getCode().toString();
-                        if (code==("LEFT")) {
-                        	gc.clearRect(0,0,600,600);
-                        	gc.drawImage( map, 0, 0 );
-                        	player1.setPosition((player1.getXPosition()-offset), player1.getYPosition());
-                        	player1.render(gc);
-                        }
-                        if (code==("RIGHT")) {
-                        	gc.clearRect(0,0,600,600);
-                        	gc.drawImage( map, 0, 0 );
-                    		player1.setPosition(player1.getXPosition()+offset, player1.getYPosition());
-                    		player1.render(gc);
-                        }
+				double offset = 62.5;// THIS IS THE PIXEL SIZE OF EACH TILE//
+				String code = event.getCode().toString(); // GETTING THE STRING VALUE FOR THE KEY PRESSED//
+				if (code == ("LEFT")) {
+						player1.setPosition((player1.getXPositionGUI() - offset), player1.getYPositionGUI());
+						render(gc, player1);
+				}
+				if (code == ("RIGHT")) {
+					if (player1.move("right", player1)) {
+						player1.setPosition(player1.getXPositionGUI() + offset, player1.getYPositionGUI());
+						render(gc, player1);
+					}
+				}
 
-                        if (code==("UP")) {
-                        	gc.clearRect(0,0,600,600);
-                        	gc.drawImage( map, 0, 0 );
-                    		player1.setPosition(player1.getXPosition(), player1.getYPosition()-offset);
-                        	player1.render(gc);
-                        }
+				if (code == ("UP")) {
+					if (player1.move("up", player1)) {
+						player1.setPosition(player1.getXPositionGUI(), player1.getYPositionGUI() - offset);
+						render(gc, player1);
+					}
+				}
 
-                        if (code==("DOWN")) {
-                        	gc.clearRect(0,0,600,600);
-                        	gc.drawImage( map, 0, 0 );
-                			player1.setPosition(player1.getXPosition(), player1.getYPosition()+offset);
-                        	player1.render(gc);
-                        }
+				if (code == ("DOWN")) {
+					if (player1.move("down", player1)) {
+						player1.setPosition(player1.getXPositionGUI(), player1.getYPositionGUI() + offset);
+						render(gc, player1);
+					}
+				}
+				if (code == "SHIFT") {
+					if (!activeKeys.contains("SHIFT")) {
+						activeKeys.add("SHIFT");
+						bomb = new guiBomb(player1.getXPositionGUI(), player1.getYPositionGUI());
+						gc.drawImage(bombImage, bomb.getXcoord(), bomb.getYcoord());
+						gc.drawImage(player1.getImage(), player1.getXPositionGUI(), player1.getYPositionGUI());
+						flag = true;
 
-                    }
-                });
+						// THIS IS THE TIMER FOR THE BOMB//
+						int delay = 1000;
+						int period = 1000;
+						timer = new Timer();
+						interval = Integer.parseInt("3");
+						timer.scheduleAtFixedRate(new TimerTask() {
+							public void run() {
+								setInterval();
+								if (!flag)
+									render(gc, player1);
+							}
+						}, delay, period);
+					}
+				}
+			}
+		});
 
-        theScene.setOnKeyReleased(
-                new EventHandler<KeyEvent>() {
-                    @Override
-                    public void handle(KeyEvent event) {
-                        String code = event.getCode().toString();
-                    	//adds the keys pressed to the arraylist currentlyacticekeys;
-                        currentlyActiveKeys.remove(code);
-                    }
-                });
+//        theScene.setOnKeyReleased(
+//                new EventHandler<KeyEvent>() {
+//                    @Override
+//                    public void handle(KeyEvent event) {
+//                        String code = event.getCode().toString();
+//                    }
+//                });
+//        
+//        new AnimationTimer(){
+//            public void handle(long currentNanoTime)
+//            {            	
+//        }.start();}
+		theStage.show();
+	}
 
+	private void render(GraphicsContext gc, guiPlayer player) {
+		Image mapImage = new Image("gameboard.png");
+		Image wallImage = new Image("unbreakableWall.png");
 
-       // handler.addObject(new Player(100, 40, ID.Player));
-        final long startNanoTime = System.nanoTime();
+		gc.clearRect(0, 0, 600, 600);
+		map.makingMapForGui(gc, wallImage, mapImage);
 
-        new AnimationTimer(){
-        	//double offset=62.5;
-            public void handle(long currentNanoTime)
-            {
-            	//for
-            }
-        }.start();
-        theStage.show();
-    }
+		if (flag) {
+			gc.drawImage(bombImage, bomb.getXcoord(), bomb.getYcoord());
+			gc.drawImage(player.getImage(), player.getXPositionGUI(), player.getYPositionGUI());
+		}
+		if (!flag) {
+			gc.drawImage(player.getImage(), player.getXPositionGUI(), player.getYPositionGUI());
+		}
+	}
 
-    public void stop(){
-        try{
-            //thread.join();
-            running = false;
-        }catch(Exception exception){
-            exception.printStackTrace();
-        }
-    }
-//    private void tick(){
-//        handler.tick();
-//    }
-    private void render(){
-        BufferStrategy bs = this.getBufferStrategy();
-        if(bs == null){
-            this.createBufferStrategy(3);
-            return;
-        }
-        Graphics g = bs.getDrawGraphics();
-        g.setColor(Color.GREEN);
-        g.fillRect(0, 0, WIDTH, HEIGHT);
+	private final int setInterval() {
+		if (interval == 1) {
+			timer.cancel();
+			// System.out.println("booof");
+			flag = false;
+			activeKeys.remove("SHIFT");
+		}
+		return --interval;
+	}
 
-       // handler.render(g);
-        g.dispose();
-        bs.show();
-    }
-    public void run2(){ // the second game loop
-
-    }
-
-    public void run(){ // this is the game loop
-        long lastTime = System.nanoTime();
-        double amountOfTicks = 60.0;
-        double ns = 1000000000 / amountOfTicks;
-        double delta = 0;
-        long timer = System.currentTimeMillis();
-        int frames = 0;
-        while(running){
-            long now = System.nanoTime();
-            delta += (now - lastTime) / ns;
-            lastTime = now;
-            while(delta >= 1){
-              //  tick();
-                delta--;
-            }
-            if(running){
-                render();
-                frames++;
-                if(System.currentTimeMillis() - timer > 1000){
-                    timer += 1000;
-                    System.out.println("Frames per second " + frames);
-                    frames = 0;
-                }
-            }
-            stop();
-        }
-
-
-    }
+	public static void main(String[] args) {
+		launch(args);
+	}
 }
