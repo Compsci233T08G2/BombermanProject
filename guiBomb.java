@@ -1,27 +1,29 @@
+package graphics;
 import javafx.scene.image.Image;
 import mechanics.Bomb;
 
-public class guiBomb{
+public class guiBomb extends Bomb{
 	private Image bombImage;
-	private double xcoord;
-	private double ycoord;
-	public guiBomb(double xCord, double yCord) {
-		//super(xCord, yCord);
-		xcoord=xCord;
-		ycoord=yCord;
+	private double xcoordGUI;
+	private double ycoordGUI;
+	public guiBomb(int xCord, int yCord,double xcoordGUI, double ycoordGUI) {
+		super(xCord, yCord);
+		this.xcoordGUI = xcoordGUI;
+		this.ycoordGUI = ycoordGUI;
 		bombImage = new Image("BombermanBomb.png");
 	}
+
 	public double getXcoord() {
-		return xcoord;
+		return xcoordGUI;
 	}
 	public double getYcoord() {
-		return ycoord;
+		return ycoordGUI;
 	}
 	public void setXcoord(double xcoord) {
-		this.xcoord = xcoord;
+		this.xcoordGUI = xcoord;
 	}
 	public void setYcoord(double ycoord) {
-		this.ycoord = ycoord;
+		this.ycoordGUI = ycoord;
 	}
 	public Image getBombImage() {
 		return bombImage;

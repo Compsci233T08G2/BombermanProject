@@ -15,7 +15,7 @@ public class Bomb extends GameObject {
 
 		tempx = super.getxCord() + 1;
 		tempy = super.getyCord();
-		if (tempx >= 0 && tempx <= map.getLength()) {
+		if (tempx >= 0 && tempx <= map.getLength()-1) {
 			xValues[0] = tempx;
 			yValues[0] = tempy;
 		} else {
@@ -25,7 +25,7 @@ public class Bomb extends GameObject {
 
 		tempx = super.getxCord() - 1;
 		tempy = super.getyCord();
-		if (tempx >= 0 && tempx <= map.getLength()) {
+		if (tempx >= 0 && tempx <= map.getLength()-1) {
 			xValues[1] = tempx;
 			yValues[1] = tempy;
 		} else {
@@ -35,7 +35,7 @@ public class Bomb extends GameObject {
 
 		tempx = super.getxCord();
 		tempy = super.getyCord() + 1;
-		if (tempy >= 0 && tempy <= map.getLength()) {
+		if (tempy >= 0 && tempy <= map.getLength()-1) {
 			xValues[2] = tempx;
 			yValues[2] = tempy;
 		} else {
@@ -45,7 +45,7 @@ public class Bomb extends GameObject {
 
 		tempx = super.getxCord();
 		tempy = super.getyCord() - 1;
-		if (tempy >= 0 && tempy <= map.getLength()) {
+		if (tempy >= 0 && tempy <= map.getLength()-1) {
 			xValues[3] = tempx;
 			yValues[3] = tempy;
 		} else {

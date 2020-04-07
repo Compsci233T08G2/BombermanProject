@@ -1,3 +1,5 @@
+package graphics;
+
 import javafx.animation.AnimationTimer;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
@@ -39,8 +41,9 @@ public class guiBomberman extends Application {
 
 	private Map map = new Map();
 	private guiBomb bomb;
-	private static Timer timer;
-	private static int interval;
+	private Timer timer;
+	private int interval;
+	private boolean playerAlive;
 	private ArrayList<String> activeKeys;
 
 	public void start(Stage theStage) {
@@ -52,12 +55,11 @@ public class guiBomberman extends Application {
 		root.getChildren().add(canvas);
 		GraphicsContext gc = canvas.getGraphicsContext2D();
 		Image mapImage = new Image("gameboard.png");
-		
 
 		gc.drawImage(mapImage, 0, 0);
 		////////////////////////////////////////////////////////
 
-		guiPlayer player1 = new guiPlayer(0, 0, "luqman");
+		guiPlayer player1 = new guiPlayer(0, 0, "l");
 		GameObject.intializingMap(player1, null);
 		bombImage = new Image("bombermanBomb.png");
 		activeKeys = new ArrayList<String>();
@@ -71,8 +73,10 @@ public class guiBomberman extends Application {
 				double offset = 62.5;// THIS IS THE PIXEL SIZE OF EACH TILE//
 				String code = event.getCode().toString(); // GETTING THE STRING VALUE FOR THE KEY PRESSED//
 				if (code == ("LEFT")) {
+					if (player1.move("left", player1)) {
 						player1.setPosition((player1.getXPositionGUI() - offset), player1.getYPositionGUI());
 						render(gc, player1);
+					}
 				}
 				if (code == ("RIGHT")) {
 					if (player1.move("right", player1)) {
@@ -97,7 +101,8 @@ public class guiBomberman extends Application {
 				if (code == "SHIFT") {
 					if (!activeKeys.contains("SHIFT")) {
 						activeKeys.add("SHIFT");
-						bomb = new guiBomb(player1.getXPositionGUI(), player1.getYPositionGUI());
+						bomb = new guiBomb(player1.getxCord(), player1.getyCord(), player1.getXPositionGUI(),
+								player1.getYPositionGUI());
 						gc.drawImage(bombImage, bomb.getXcoord(), bomb.getYcoord());
 						gc.drawImage(player1.getImage(), player1.getXPositionGUI(), player1.getYPositionGUI());
 						flag = true;
@@ -112,6 +117,12 @@ public class guiBomberman extends Application {
 								setInterval();
 								if (!flag)
 									render(gc, player1);
+								// alive is false
+								if (playerAlive) {
+									System.out.println("WELCOME TO THE REALM");
+									System.exit(0);
+								}
+
 							}
 						}, delay, period);
 					}
@@ -152,10 +163,12 @@ public class guiBomberman extends Application {
 
 	private final int setInterval() {
 		if (interval == 1) {
+			System.out.println("im here");
 			timer.cancel();
-			// System.out.println("booof");
 			flag = false;
 			activeKeys.remove("SHIFT");
+			playerAlive = bomb.Blown();
+			// return bomb.Blown();
 		}
 		return --interval;
 	}

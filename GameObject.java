@@ -37,6 +37,7 @@ public class GameObject {
 
 	public static void intializingMap(Player p1, Player p2) {
 		map = new Map(p1, p2);
+		map.printMap();
 
 	}
 

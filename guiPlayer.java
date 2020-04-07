@@ -1,3 +1,4 @@
+package graphics;
 import javafx.scene.image.Image;
 import mechanics.*;
 import mechanics.Map;
@@ -9,14 +10,14 @@ import javafx.scene.canvas.GraphicsContext;
 ////////////////////////////////////////////////////
 public class guiPlayer extends Player{
     private Image playerImage;
-    private double positionXOnMap;
-    private double positionYOnMap;
+    private double positionXGUI;
+    private double positionYGUI;
 
 
     public guiPlayer(int positionX, int positionY,String playerId) {
     	super(positionX,positionY,playerId);
-        this.positionXOnMap = positionX;
-        this.positionYOnMap = positionY;
+        this.positionXGUI = positionX;
+        this.positionYGUI = positionY;
         this.playerImage = new Image("Player1_1.png");
 
     }
@@ -29,20 +30,22 @@ public class guiPlayer extends Player{
         Image sprite = new Image(filename);
         setImage(sprite);
     }
+    
     public Image getImage() {
     	return this.playerImage;
     }
 
     public void setPosition(double x, double y){
-        positionXOnMap = x;
-        positionYOnMap = y;
+        positionXGUI = x;
+        positionYGUI = y;
     }
-    public double getXPosition() {
-    	return this.positionXOnMap;
+    
+    public double getXPositionGUI() {
+    	return this.positionXGUI;
     }
 
-    public double getYPosition() {
-    	return this.positionYOnMap;
+    public double getYPositionGUI() {
+    	return this.positionYGUI;
     }
 
 
