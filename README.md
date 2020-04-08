@@ -1,37 +1,37 @@
 # BombermanProject
+Our project is based on the game Bomberman. The game Bomberman is a multiplayer game where two players traverse a map and break walls to eliminate the other player with a bomb. We have two versions of Bomberman, a text-based version and a GUI-based version. In the text-based version, two players take turns playing the game on a printed arraylist. In the GUI-based version, two players move around a map in real time trying to eliminate each other. 
 Files included:
-Map.java
+bombermanBomb.png
+gameboard.png
+player1_1.png
+unbreakableWall.png
 Bomb.java
-Character.java
-Movement.java
-
-To run Bomberman first:
-Download files
-Movement.java, Map.java, Bomb.java, Character.java.
-Download Eclipse.ide for java.
-Create a java project and import the above java files into the source file.
-Run the Movement class in the command prompt to start playing the game.
-
--------------------------------------------------------
+Bwall.java
+GameObject.java
 Map.java
-Creates a 2D array that is referenced as the map used for the gameboard.
-Contains getters and setters along side methods to distinguish between breakable and un-breakable walls.
-Prints out a text based version of the array that is used as reference of the gameboard while running.
+Player.java
+Title.java
+Uwall.java
+Wall.java
+TextBased.java
+TextGame.java
+guiBomb.java
+guiBomberman.java
+guiPlayer.java
+ID.java
 
--------------------------------------------------------
+How to install Bomberman:
+Download files
+Download Eclipse.ide for java.
+Create a java project and import the above png files into the source folder.
+Create a package in the source folder called mechanics and import Bomb.java, Bwall.java, GameObject.java, Map.java, Player.java, Title.java, Uwall.java and Wall.java
 
-Bomb.Java
-The Bomb class extends the Movement class.
-This class contains methods that return integers and booleans too the Movement class. 
+Create a package in the source folder called textBased and import TextBased.java and TextGame.java
 
--------------------------------------------------------
+Create a package in the source folder called graphics and import guiBomb.java, guiBomberman.java, guiPlayer.java and ID.java
 
-Character.java
-The Character class contains coordinates instances and a string playerid with getters, setters and constructors to initialize character/player objects. 
+How to play BomberMan:
+To play The Bomberman text-based game, run the textBased package as a java application.
+To play The Bomberman GUI-based game, run the graphics package as a java application.
 
--------------------------------------------------------
-
-Movement.java
-The Movement class contains the method movement which takes in values from all other classes to run our code.
-The class calls the method which runs our game in the consol as a text based version of our game.
 
