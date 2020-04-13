@@ -3,10 +3,12 @@ import javafx.scene.image.Image;
 import mechanics.Bomb;
 
 public class guiBomb extends Bomb{
+	//variables/fields for bomb
 	private Image bombImage;
 	private double xcoordGUI;
 	private double ycoordGUI;
 	private boolean bombFlag;
+	//constructor
 	public guiBomb(int xCord, int yCord,double xcoordGUI, double ycoordGUI) {
 		super(xCord, yCord);
 		this.xcoordGUI = xcoordGUI;
@@ -14,7 +16,7 @@ public class guiBomb extends Bomb{
 		bombImage = new Image("BombermanBomb.png");
 		bombFlag=false;		
 	}
-
+//getter and setters for position, bomb image/sprite, etc.
 	public double getXcoord() {
 		return xcoordGUI;
 	}
