@@ -4,8 +4,8 @@ package mechanics;
  * this class creates a bomb and has a bomb method which blows the bomb up 
  */
 public class Bomb extends GameObject {
-	int[] xValues = new int[4];
-	int[] yValues = new int[4];
+	private int[] xValues = new int[4];
+	private int[] yValues = new int[4];
 
 	/*
 	 * this constructor takes in the x coord and y coord of the bomb
@@ -67,19 +67,6 @@ public class Bomb extends GameObject {
 		return (map.blowingUp(xValues, yValues));
 	}
 
-	/*
-	 * returns the x coord of the bomb radius
-	 */
-	public int[] getX() {
-		return xValues;
-	}
 
-	/*
-	 * returns the y coord of the bomb radius
-	 */
-	public int[] getY() {
-		return yValues;
-
-	}
 
 }
