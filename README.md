@@ -20,7 +20,6 @@ TextGame.java,
 guiBomb.java,
 guiBomberman.java,
 guiPlayer.java,
-ID.java
 
 ------------------------------------------------------------------------------------------------------------------------------------
 
@@ -35,14 +34,18 @@ Create a package in the source folder called mechanics and import Bomb.java, Bwa
 
 Create a package in the source folder called textBased and import TextBased.java and TextGame.java
 
-Create a package in the source folder called graphics and import guiBomb.java, guiBomberman.java, guiPlayer.java and ID.java
+Create a package in the source folder called graphics and import guiBomb.java, guiBomberman.java and guiPlayer.java
 
 ------------------------------------------------------------------------------------------------------------------------------------
 
 How to play BomberMan:
 
 To play The Bomberman text-based game, run the textBased package as a java application.
+Controls:
+type right, left, up, down or none for movement and bomb for bomb.
 
 To play The Bomberman GUI-based game, run the graphics package as a java application.
-
-
+Controls for Player1:
+Arrow keys for movement and spacebar for bomb.
+Controls for Player2:
+W A S D for movement and shift for bomb.
