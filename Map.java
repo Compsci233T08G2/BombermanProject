@@ -1,3 +1,4 @@
+
 package mechanics;
 
 import java.util.ArrayList;
@@ -6,6 +7,10 @@ import java.util.Arrays;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 
+/*
+ * The following class contains methods which are used to make and manipulate the map 
+ */
+
 public class Map {
 
 	private Tile[][] map = new Tile[8][8];
@@ -13,19 +18,32 @@ public class Map {
 	private Bomb b;
 	private Player p2;
 
-	private static Uwall[][] uw = new Uwall[8][8];
+	private Uwall[][] uw = new Uwall[8][8];
 	private static Bwall[][] bw = new Bwall[8][8];
 
+	/*
+	 * this constructor takes in player one and two as arugments and makes the map
+	 * using those players
+	 */
 	public Map(Player p1, Player p2) {
 		this.p1 = p1;
 		this.p2 = p2;
 		makingMap();
 	}
 
+	/*
+	 * this constructor is like a default constructor when called it just
+	 * intiallizes the map
+	 */
 	public Map() {
-		this.makingMap();
+
+		makingMap();
 	}
 
+	/*
+	 * The following method has a double for loop which fills the "MAP" with objects
+	 * based off of there coordinates
+	 */
 	public void makingMap() {
 
 		for (int i = 0; i < 8; i++) {
@@ -128,6 +146,10 @@ public class Map {
 		}
 	}
 
+	/*
+	 * this method takes in an x and y coordinate and checks if the tile at that
+	 * location in the map is empty and returns true if it is and false if not
+	 */
 	public boolean isMove(int x, int y) {
 		if (map[y][x].emptyTile()) {
 			return true;
@@ -138,6 +160,13 @@ public class Map {
 
 	}
 
+	/*
+	 * The following method takes in the objects current x and y coordinates and the
+	 * coordinates the object would like to move to as mx and my and the object that
+	 * would like to move. The method intially checks if the object is in the tile
+	 * and if soe moves the object from its intial location to its desired location
+	 * and changes its x and y coordinates
+	 */
 	public void moving(int x, int y, int mx, int my, GameObject o) {
 		if (map[y][x].isinTile(o)) {
 			map[y][x].removeGameObject(o);
@@ -147,9 +176,15 @@ public class Map {
 		}
 	}
 
+	/*
+	 * The following method takes in two arrays x and y which hold coordinates of
+	 * where the bomb blows and the method goes through the map and checks each tile
+	 * to see if it contains something which can blow up and removes it from the map
+	 * and if there is a player in that region it removes the player it returns true
+	 * if the player was not in the region returns false returns false
+	 */
 	public boolean blowingUp(int[] x, int[] y) {
 		boolean playerDown = false;
-		System.out.println("When in ");
 		for (int i = 0; i < x.length; i++) {
 			int tempx = x[i];
 			for (int j = 0; j < y.length; j++) {
@@ -165,22 +200,23 @@ public class Map {
 				}
 			}
 		}
-
-		for (int i = 0; i < bw.length; i++) {
-			for (int j = 0; j < bw[i].length; j++) {
-				System.out.println(bw[i][j]);
-			}
-		}
-
+		printMap();
 		return playerDown;
 
 	}
 
+	/*
+	 * Returns the length of the map array
+	 */
 	public int getLength() {
 		// TODO Auto-generated method stub
 		return map.length;
 	}
 
+	/*
+	 * The Following method loops through the double array map and prints the
+	 * objects inside the array such as the bomb, walls,etc.
+	 */
 	public void printMap() {
 		for (int i = 0; i < 8; i++) {
 			for (int j = 0; j < 8; j++) {
@@ -200,7 +236,7 @@ public class Map {
 					System.out.print(p2.getPlayerid());
 					System.out.print(" ");
 				} else if (map[i][j].isinTile(b)) {
-					System.out.print("B");
+					System.out.print("L");
 					System.out.print(" ");
 				} else {
 					System.out.print("?");
@@ -218,19 +254,6 @@ public class Map {
 		double pixelXAxis = 0;
 		double pixelYAxis = 0;
 		gc.drawImage(imageMap, 0, 0);
-		// MAKING UNBREAKABLE WALLS
-		for (Uwall[] m : uw) {
-			for (Uwall n : m) {
-				if (n != null) {
-					int g1 = n.getxCord();
-					int g2 = n.getyCord();
-					pixelXAxis = g1 * offSet;
-					pixelYAxis = g2 * offSet;
-					gc.drawImage(imageUWall, pixelXAxis, pixelYAxis);
-				}
-			}
-		}
-		
 
 		// Making BREAKABLE WALLS
 		for (int i = 0; i < bw.length; i++) {
@@ -241,6 +264,11 @@ public class Map {
 					pixelXAxis = g1 * offSet;
 					pixelYAxis = g2 * offSet;
 					gc.drawImage(imageBWall, pixelXAxis, pixelYAxis);
+				}
+				if (uw[i][j] != null) {
+					pixelXAxis = j * offSet;
+					pixelYAxis = i * offSet;
+					gc.drawImage(imageUWall, pixelXAxis, pixelYAxis);
 				}
 			}
 		}

@@ -1,14 +1,26 @@
 package mechanics;
 
+/*
+ * this class creates a bomb and has a bomb method which blows the bomb up 
+ */
 public class Bomb extends GameObject {
 	int[] xValues = new int[4];
 	int[] yValues = new int[4];
 
+	/*
+	 * this constructor takes in the x coord and y coord of the bomb
+	 */
 	public Bomb(int xCord, int yCord) {
 		super(xCord, yCord);
 		// TODO Auto-generated constructor stub
 	}
 
+	/*
+	 * this method returns true and false true if the player dies and false if the
+	 * player is alive. it intially makes an array of x and y coordinates of the
+	 * bomb blown radius and checks using a method in the map class to see if the
+	 * player dies and also removes objects in that radius.
+	 */
 	public Boolean Blown() {
 		int tempx = super.getxCord();
 		int tempy = super.getyCord();
@@ -55,10 +67,16 @@ public class Bomb extends GameObject {
 		return (map.blowingUp(xValues, yValues));
 	}
 
+	/*
+	 * returns the x coord of the bomb radius
+	 */
 	public int[] getX() {
 		return xValues;
 	}
 
+	/*
+	 * returns the y coord of the bomb radius
+	 */
 	public int[] getY() {
 		return yValues;
 
